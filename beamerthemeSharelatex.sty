@@ -1,0 +1,138 @@
+% this style is based on the theme "Dreuw" created by Philippe Dreuw and Thomas Deselaers, only minor changes on the logo and the colour palette were made.
+\ProvidesPackage{beamerthemeSharelatex} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{aaltologo}
+\mode<presentation>
+
+% Use correct math fonts in beamer mode: https://tex.stackexchange.com/a/161390
+\usefonttheme{professionalfonts}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setbeamercolor{headline}{fg=black,bg=white}
+\setbeamercolor{footline}{fg=black, bg=white}
+\setbeamerfont{footline}{size=\small}
+\setbeamercolor{upper separation line foot}{bg=aaltoBlue}
+\setbeamercolor{title in headline}{fg=aaltoBlue}
+\setbeamercolor{author in headline}{fg=black}
+\setbeamercolor{institute in headline}{fg=aaltoBlue}
+
+\setbeamercolor{framesubtitle}{fg=ta3aluminium, bg=ta2gray}
+\setbeamercolor{author in head/foot}{fg=black, bg=white}
+\setbeamercolor{title in head/foot}{fg=ta2aluminium, bg=black}
+
+\setbeamercolor*{normal text}{fg=black, bg=white}
+\setbeamercolor*{block body}{bg=aaltoBlue!10,fg=black}
+\setbeamercolor*{block title}{fg=white,bg=aaltoBlue}
+\setbeamerfont{block title}{size=\large,series=\bf}
+\setbeamercolor{upper separation line head}{fg=aaltoBlue}
+
+\setbeamercolor*{example body}{fg=ta3aluminium,bg=black}
+\setbeamercolor*{example text}{fg=ta3aluminium,bg=black}
+\setbeamercolor*{example title}{bg=taaluminium,fg=ta2gray}
+
+\setbeamercolor{alerted text}{fg=ta3gray}
+
+%\setbeamercolor{example text}{fg=taaluminium}
+\setbeamercolor{structure}{fg=aaltoGray}
+
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{navigation symbols}{}  % no navigation on a poster
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setbeamertemplate{block begin}{
+  \vskip.75ex
+  \begin{beamercolorbox}[rounded=true,shadow=true,leftskip=1cm,colsep*=.75ex]{block title}%
+    \usebeamerfont*{block title}\insertblocktitle
+  \end{beamercolorbox}%
+  {\ifbeamercolorempty[bg]{block body}{}{\nointerlineskip\vskip-0.5pt}}%
+  \usebeamerfont{block body}%
+  \begin{beamercolorbox}[rounded=true,shadow=true,colsep*=.75ex,sep=.75ex,vmode]{block body}%
+    \ifbeamercolorempty[bg]{block body}{\vskip-.25ex}{\vskip-.75ex}\vbox{}%
+  }
+  \setbeamertemplate{block end}{
+  \end{beamercolorbox}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setbeamertemplate{headline}{  
+  \leavevmode
+    
+  \begin{beamercolorbox}[wd=\paperwidth]{headline}
+    \vspace{0.008\linewidth}
+    \begin{columns}[T]
+      \begin{column}{.01\paperwidth}
+      \end{column}
+      %\begin{column}{.04\paperwidth}
+      %  \vskip1ex
+      %  \begin{center}
+      %    \AaltoLogoLarge{1.55}{?}{aaltoPurple}
+      %  \end{center}
+      %  \vskip1ex
+      %\end{column}
+      \begin{column}{.835\paperwidth}
+        \vskip2ex
+        %\begin{center}
+        \usebeamercolor{title in headline}{\color{fg}\textbf{\huge{\inserttitle}}\\[3ex]}
+        \usebeamercolor{author in headline}{\color{fg}\textbf{\Large{\insertauthor}}\\[1ex]}
+        \usebeamercolor{institute in headline}{\color{fg}\normalsize{\insertinstitute}\\[1ex]}     
+        %\end{center}
+      \end{column}
+      \begin{column}{.145\paperwidth}
+        \vskip1cm
+        \begin{center}
+            \includegraphics[width=\textwidth]{images/all_logos.pdf}
+        \end{center}
+        %\vskip1.5cm
+      \end{column}
+      \begin{column}{.01\paperwidth}
+      \end{column}
+    \end{columns}
+  \end{beamercolorbox}
+
+  \begin{beamercolorbox}[wd=\paperwidth]{lower separation line head}
+    \rule{0pt}{2pt}
+  \end{beamercolorbox}
+}
+
+\setbeamertemplate{footline}{
+  \begin{beamercolorbox}[wd=\paperwidth]{upper separation line foot}
+    \rule{0pt}{2pt}
+  \end{beamercolorbox}
+  
+  \leavevmode%
+  \begin{beamercolorbox}[ht=4ex,leftskip=1cm,rightskip=1cm]{author in head/foot}%
+        \textbf{Acknowledgements}: This work has been supported by Academy of Finland [268874/MIDAS, 310107/MACOME]; and the Aalto Science-IT infrastructure
+        \hfill
+        \insertshortauthor
+        \vskip1ex 
+  \end{beamercolorbox}
+  \vskip0pt%
+  \begin{beamercolorbox}[wd=\paperwidth]{lower separation line foot}
+    \rule{0pt}{2pt}
+  \end{beamercolorbox}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Prevents the logo being printed in the default location
+\defbeamertemplate*{sidebar right}{sidebar theme}
+{%
+    \vfill%
+    \llap{\usebeamertemplate***{navigation symbols}\hskip0.1cm}%
+    \vskip2pt}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Display a grid to help align images ... and it looks nice with this color scheme
+%\beamertemplategridbackground[1cm]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mode<all>
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-PDF-mode: t
+%%% TeX-master: "poster"
+%%% End: 

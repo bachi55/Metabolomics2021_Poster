@@ -1,0 +1,247 @@
+\documentclass[a4paper,10pt]{article}
+
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[ansinew]{inputenc}
+
+\usepackage{lmodern}	% font definition
+\usepackage{amsmath}	% math fonts
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+
+\usepackage{tikz}
+\usepackage{ifthen}
+
+%%%<
+\usepackage{verbatim}
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{5pt}%
+%%%>
+
+
+\usetikzlibrary{decorations.pathmorphing} % noisy shapes
+\usetikzlibrary{fit}					% fitting shapes to coordinates
+\usetikzlibrary{backgrounds}	% drawing the background after the foreground
+\usetikzlibrary{arrows.meta}
+
+\begin{document}
+
+\tikzstyle{places}=[circle,draw=blue!50,fill=blue!20,thick,minimum
+   size=5mm]
+\tikzstyle{placef}=[rectangle,draw=black!50,fill=green!20,thick,minimum
+   size=5mm,inner sep=0.1cm,rounded corners=2mm,opacity=0.99]
+\tikzstyle{placeo1}=[circle,draw=black!50,fill=red!30,thick,minimum
+   size=4mm]
+\tikzstyle{placeo2}=[rectangle,draw=black!50,fill=blue!20,thick,minimum
+   size=4mm]
+\tikzstyle{placeo3}=[circle,draw=black!50,fill=green!30,thick,minimum
+   size=4mm]
+\tikzstyle{placeo4}=[circle,draw=black!50,fill=cyan!30,thick,minimum
+   size=4mm]
+\tikzstyle{placet}=[circle,draw=black!90,fill=blue!30,thick,
+  minimum size=5mm,
+  decorate,decoration={random steps,segment length=2pt,
+                                 amplitude=1pt}]
+\tikzstyle{place2}=[rectangle,draw=black!100,fill=gray!20,opacity=0.6,thick,
+  minimum size=12mm,
+  decorate,decoration={random steps,segment length=2pt,
+                                 amplitude=1pt}]
+\tikzstyle{table}=[rectangle,fill=blue!20,inner sep=0.2cm]
+
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\tikzstyle{background_k}=[rectangle,fill=green!30,inner sep=0.2cm,
+                                                rounded corners=5mm]
+\tikzstyle{background_ij}=[rectangle,fill=yellow!30,inner sep=0.2cm,
+                                                rounded corners=5mm]
+
+\tikzstyle{background_i}=[rectangle,fill=gray!5,inner sep=0.2cm,
+                                                rounded corners=5mm]
+
+
+\begin{tikzpicture}[every text node part/.style={align=center},inner sep=2mm]
+
+  \pgfmathsetmacro \xgap {4}
+  \pgfmathsetmacro \ygap {1.7}
+  \pgfmathsetmacro \xy {0}
+  \pgfmathsetmacro \xx {0}
+  \pgfmathsetmacro \ny {3}
+  \pgfmathsetmacro \nlayer {4}
+    
+  %% main title
+  \node (suptitle) at (\xx+3.9*\xgap,\xy+6.8*\ygap) [] {\color{blue}
+  \Large Integration of MS/MS and retention order scores via
+  dynamic programming }; 
+
+
+  % source node
+  % \node (s_0) at (\xx,\xy+4*\ygap) [] {};
+  % \node (s) at (\xx+0.75*\xgap,\xy+4*\ygap) [places] {Source };
+  % \draw[->,very thick] (s_0) -- (s) node [midway, above ] {$+d$};
+
+
+  % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  % draw nodes first two layers
+  % \pgfmathtruncatemacro\mlayer{\nlayer-1}
+  
+  \foreach \i in {0,...,1}{
+    \pgfmathtruncatemacro\u{\i+1}
+  \foreach \j in {0,...,\ny}{
+    \pgfmathtruncatemacro\v{\ny-\j+1}
+    \node (i_\i\j) at (\xx+2*\xgap+\i*\xgap,\xy+2.5*\ygap+\j*\ygap)
+    [placef] {\small $n_{\u,\v}$ \\ \small
+    $(y_{\u,\v},w^T\phi(m_{\u,\v}))$ };
+    }
+  }
+  
+  %% ... dummy layer
+  \foreach \i in {2,...,2}{
+    \pgfmathtruncatemacro\u{\i+1}
+  \foreach \j in {0,...,\ny}{
+    \pgfmathtruncatemacro\v{\ny-\j+1}
+    \node (i_\i\j) at (\xx+2*\xgap+\i*\xgap,\xy+2.5*\ygap+\j*\ygap)
+    [] {$\cdots$  };
+    }
+  }
+
+  %% one before last layer
+  \foreach \i in {3,...,3}{
+    \pgfmathtruncatemacro\u{\i+1}
+  \foreach \j in {0,...,\ny}{
+    \pgfmathtruncatemacro\v{\ny-\j+1}
+    \node (i_\i\j) at (\xx+2*\xgap+\i*\xgap,\xy+2.5*\ygap+\j*\ygap)
+    [placef] {\small $n_{N-1,\v}$ \\ \small
+    $(y_{N-1,\v},w^T\phi(m_{N-1,\v}))$ };
+    }
+  }
+  
+  % %% last layer
+  \foreach \i in {\nlayer,...,\nlayer}{
+    \pgfmathtruncatemacro\u{\i+1}
+  \foreach \j in {0,...,\ny}{
+    \pgfmathtruncatemacro\v{\ny-\j+1}
+    \node (i_\i\j) at (\xx+2*\xgap+\i*\xgap,\xy+2.5*\ygap+\j*\ygap)
+    [placef] {\small $n_{N,\v}$ \\ \small
+    $(y_{N,\v},w^T\phi(m_{N,\v}))$ };
+    }
+  }
+  
+
+  % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  % draw edges
+  \begin{scope}[on background layer]
+  \pgfmathtruncatemacro\mlayer{\nlayer-1}
+  \foreach \i in {0,...,\mlayer}{
+    \pgfmathtruncatemacro\ii{\i+1}
+    \foreach \j in {0,...,\ny}{
+       \foreach \k in {0,...,\ny}{
+         \draw[line width=0.1,-{Stealth}] (i_\i\j) -- (i_\ii\k) {}; 
+      }
+    }
+  }
+  \end{scope}
+
+  %% layers tags
+
+  \node (layer1) at (\xx+2*\xgap,\xy+3.0*\ygap+\ny*\ygap) {Layer $1$};
+  \node (layerN) at
+  (\xx+2*\xgap+\nlayer*\xgap,\xy+3.0*\ygap+\ny*\ygap) {Layer $N$};
+
+  \draw[->,dotted,thick] (layer1) -- node[above] {Increasing retention
+  time $\longrightarrow$} (layerN) {};
+  
+  %% row(score) tags
+  \node (row1) at (\xx+1.4*\xgap,\xy+2.5*\ygap+\ny*\ygap) {Highest \\ score};
+  \node (rown) at
+  (\xx+1.4*\xgap,\xy+2.5*\ygap) {Lowest \\ score};
+
+  \draw[->,dotted,thick] (row1) -- (rown) {};
+
+  
+  
+  % edges from source to first column
+  % \foreach \i in {0,...,\ny}{
+  %   \draw[->] (s) -- (i_0\i) {};
+  % }
+  
+  % target node
+  % \node (t_0) at (\xx+1*\xgap+1.5*\nlayer*\xgap,\xy+4*\ygap) [] {};
+  % \node (t) at (\xx+2*\nlayer*\xgap,\xy+4*\ygap) [placet] {Target};
+  % \draw[->,very thick] (t) -- (t_0) node [midway, above ] {$-d$};
+
+
+  % % edges from last column to target
+  % \foreach \i in {0,...,\ny}{
+  %   \draw[->] (i_\nlayer\i) -- (t) {};
+  % }
+
+  %% Draw optimal path
+  % \draw[red,->,line width=3pt] (s) -- (i_01) {};
+
+
+  % %% Draw second optimal path
+  % \draw[red,->,line width=1pt] (s) -- (i_03) {};
+  \begin{scope}[on background layer]
+  \draw[red,->,line width=1pt] (i_03) -- (i_13) {};
+  \draw[red,->,line width=1pt] (i_13) -- (i_22) {};
+  \draw[red,->,line width=1pt] (i_22) -- (i_31) {};
+  \draw[red,->,line width=1pt] (i_31) -- (i_43) {};
+  \end{scope}
+  
+  
+  \draw[red,->,line width=3pt] (i_01) -- node[midway] {\large \color{blue} $\delta_{(1,3),(2,2)}$} (i_12) {};
+  \draw[red,->,line width=3pt] (i_12) -- node[midway] {\large \color{blue}  
+  $\delta_{(2,2),\cdots}$} (i_23) {};
+  \draw[red,->,line width=3pt] (i_23) -- node[midway] {\large \color{blue} 
+  $\delta_{\cdots,(N-1,2)}$} (i_32) {};
+  \draw[red,->,line width=3pt] (i_32) -- node[midway] {\large \color{blue} 
+  $\delta_{\cdots,(N-1,N)}$} (i_41) {};
+
+  
+  %% the weight of the edge
+  \node (n_i) at (\xx+4.05*\xgap,\xy+1.75*\ygap) [placeo2] {\large
+  $\delta_{(i,j),(r,s)}=-y_{r,s}+D \max(0,\mathbf{w}^T(\phi(m_{i,j})-\phi(m_{r,s}))$};  
+  
+  
+  % % % capacities, values
+  % \node (n_i) at (\xx+1*\xgap,\xy+1*\ygap) [place2] {Capacities \\ Inputs};  
+  % \node (n_o) at (\xx+2*\nlayer*\xgap,\xy+1*\ygap) [place2] {Gradient \\ Costs};  
+  % \node (n_l) at (\xx+\nlayer*\xgap+0.5*\xgap,\xy+1*\ygap) [place2] {Hidden \\ Layers};
+  % \node (ac_ij) at (\xx+2*\xgap,\xy+8.5*\ygap) [place2] {
+  % $c=\infty$ \\  $v=0$};
+  
+  % \node (ac_i) at (\xx+3*\xgap,\xy+8.5*\ygap) [place2] { $v=0$}; 
+
+  % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+
+
+
+% % background corners
+% \node (l_l) at (0.1,-0.2) [] {};
+% \node (l_h) at (1.3,4) [] {};
+
+% \node (m_l) at (2.7,-0.2) [] {};
+% \node (m_h) at (5.3,4) [] {};
+
+% \node (r_l) at (6.7,-0.2) [] {};
+% \node (r_h) at (8.4,4) [] {};
+
+%    \begin{pgfonlayer}{background}
+%         \node [background_k,
+%                     fit=(l_l) (l_h)] {};
+%         \node [background_ij,
+%                     fit=(m_l) (m_h)] {};
+%         \node [background_k,
+%                     fit=(r_l) (r_h)] {};
+%     \end{pgfonlayer}
+
+
+
+\end{tikzpicture}
+
+
+\end{document}
