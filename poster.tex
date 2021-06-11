@@ -160,16 +160,26 @@
 
 \column{.33\linewidth}
 
-\begin{block}{{\normalsize Spanning Tree Approximation}}
-\begin{figure}
-    \centering
-    \includegraphics[width=\textwidth]{images/number_of_random_spanning_trees.pdf}
-\end{figure}
-\end{block}
+    \begin{block}{{\normalsize Spanning Tree Approximation}}
+    \begin{itemize}
+        \item Marginal inference intractable in practice due to exponentail sized candidate assignment space $\mathcal{Z}$
+        \item Exact inference is feasible if $G$ is tree-like \todocite
+        \item Resort to infer the max-marginals a set of trees $\mathbf{T}=\{T_t\}_{t=1}^L$ sampled from $G$
+        \item Each tree $T_t=(V,E_t)$ is connected graph with all nodes of $G$ but reduces edges set $E_t\subseteq E$
+        \item Avergaged marginals used for ranking
+            \begin{equation}
+                \bar{p}_{\max}(z_i=r\,|\,\mathbf{T})=\frac{1}{L}\sum_{t=1}^L p_{\max}(z_i=r\,|\,T_t)
+            \end{equation}
+    \end{itemize}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\textwidth]{images/number_of_random_spanning_trees.pdf}
+    \end{figure}
+    \end{block}
 
 
-\begin{block}{{\normalsize 5. Experiments and Results}}
-\end{block}
+    \begin{block}{{\normalsize 5. Experiments and Results}}
+    \end{block}
 
 
 
