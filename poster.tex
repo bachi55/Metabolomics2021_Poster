@@ -85,6 +85,11 @@
         \item Most automated machine learning based approaches utilize \ms{} information only \todocite
         \item \lc{} retention time (RT) is valueable additional information for the annotation \todocite, e.g.
     \end{itemize}
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=\textwidth]{images/lcms2_experiment.pdf}
+        \caption{\lcmsms{} analysis pipeline and resulting data used as input for our framework.}
+    \end{figure}
     \end{block}
 
     \begin{block}{{\normalsize Retention Time (RT) Utilization}}
@@ -121,12 +126,12 @@
 % ... end of first column
 
 \column{.33\linewidth}
-    \begin{block}{{\normalsize 4. Overall Workflow}}
-    \begin{figure}
-        \centering
-        \includegraphics[width=\textwidth]{images/workflow.pdf}
-    \end{figure}
-    \end{block}
+%     \begin{block}{{\normalsize 4. Overall Workflow}}
+%     \begin{figure}
+%         \centering
+%         \includegraphics[width=\textwidth]{images/workflow.pdf}
+%     \end{figure}
+%     \end{block}
 
     \begin{block}{{\normalsize Probabilistic Framework to integrate \ms{} and Retention Orders}}
     \begin{itemize}
@@ -142,11 +147,16 @@
             \end{equation}
         \item Ranking molecular candidates via max-marginals:
             \begin{equation}
-                p_{\max}(z_i=r)=\underset{\{\mathbf{z}'\in\mathbf{Z}\,|\,z'_i=r\}}{\max}p(z_i)
+                p_{\max}(z_i=r)=\underset{\{\mathbf{z}'\in\mathcal{Z}\,|\,z'_i=r\}}{\max}p(\mathbf{z}')
             \end{equation}
         \item Intuitively, maxmimum probabilsity a candidate assignment with $z_i=r$ can achive
         \item Rank all candidates $r\in\{1,\ldots,n_i\}$ according to there max-marginals
     \end{itemize}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\textwidth]{images/mrf_and_ranking.pdf}
+        \caption{From the MRF probability distribution to the candidate ranking: \ms{} feature $i=3$ and candidate $4$ ($m_{34}$).}
+    \end{figure}
     \end{block}
 
     \begin{block}{Node and Edge Potentials}
@@ -154,6 +164,10 @@
         \item Node potential function $\psi_i:\mathcal{Z}_i\rightarrow\mathbb{R}_{>0}$: goodness of the match between measured spectrum $x_i$ and candidates of feature $i$
         \item Edge potential function $\psi_{ij}:\mathcal{Z}_i\times\mathcal{Z}_j\rightarrow\mathbb{R}_{>0}$: consistency between the observed retention order of feature $i$ and $j$ with the predicted retention order of the candidates $z_i$ and $z_j$
     \end{itemize}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.75\textwidth]{images/node_and_edge_scores.pdf}
+    \end{figure}
     \end{block}
 
 
@@ -173,12 +187,18 @@
     \end{itemize}
     \begin{figure}
         \centering
-        \includegraphics[width=\textwidth]{images/number_of_random_spanning_trees.pdf}
+        \includegraphics[width=\textwidth]{images/random_spanning_trees.pdf}
+        \caption{TODO}
     \end{figure}
     \end{block}
 
 
     \begin{block}{{\normalsize 5. Experiments and Results}}
+    \begin{itemize}
+        \item Dataset description
+        \item Show table 4 from the paper
+        \item Show figure 3 from the paper
+    \end{itemize}
     \end{block}
 
 
