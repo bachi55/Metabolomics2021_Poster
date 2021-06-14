@@ -16,6 +16,7 @@
 \usepackage{multicol}
 \usepackage{pifont}
 \usepackage{tabularx}
+\usepackage{multirow}
 
 
 \usepackage[figurename=Fig.]{caption}
@@ -162,6 +163,7 @@
         \caption{MRF probability distribution and candidate ranking, e.g. \ms{} feature $i=3$ and candidate $4$ ($m_{34}$).}
         \label{fig:mrf_and_ranking}
     \end{figure}
+    \vspace{-0.75cm}
     \end{block}
 
     \begin{block}{{\normalsize 5. Encoding \ms{} and Retention Order Information: $\boldsymbol{\psi}_i$ and $\boldsymbol{\psi}_{ij}$}}
@@ -173,47 +175,97 @@
                 \psi_{ij}(z_i=r,z_j=s)=\sigma(\underbrace{\sign(t_i-t_j)}_{\substack{\text{observed}\\ \text{retention order}}}\cdot\underbrace{\langle\mathbf{w},\phi(m_{ir})-\phi(m_{js})\rangle}_{\text{predicted retention order}})
             \end{equation}
         \item Intuitively: Matching observed and predicted retention orders receive high scores.
-        \item Utilization of a Ranking Support Vector Machine $\mathbf{w}$ to predict retention orders \cite{Bach2018}
+        \item \textbf{Retention order prediction} using Ranking Support Vector Machine (RankSVM) $\mathbf{w}$ \cite{Bach2018}
         \item Candidate molecules $m_{ir}$ representation using non-linear features $\phi$ 
     \end{itemize}
     \vspace{0.25cm}
     \begin{figure}
         \centering
-        \includegraphics[width=0.85\textwidth]{images/node_and_edge_scores.pdf}
+        \includegraphics[width=0.9\textwidth]{images/node_and_edge_scores.pdf}
         \caption{Example: Node and edge score for all candidate pairs of feature $i=4$ and $j=5$.}
     \end{figure}
+    \vspace{-0.75cm}
     \end{block}
 
 
 \hfill
 \column{.32\linewidth}
 
-    \begin{block}{{\normalsize Spanning Tree Approximation}}
+%     \begin{block}{{\normalsize Spanning Tree Approximation}}
+%     \begin{itemize}
+%         \item Marginal inference intractable in practice due to exponentail sized candidate assignment space $\mathcal{Z}$
+%         \item Exact inference is feasible if $G$ is tree-like \todocite 
+%         \item Resort to infer the max-marginals a set of trees $\mathbf{T}=\{T_t\}_{t=1}^L$ sampled from $G$
+%         \item Each tree $T_t=(V,E_t)$ is connected graph with all nodes of $G$ but reduces edges set $E_t\subseteq E$
+%         \item Avergaged marginals used for ranking
+%             \begin{equation}
+%                 \bar{p}_{\max}(z_i=r\,|\,\mathbf{T})=\frac{1}{L}\sum_{t=1}^L p_{\max}(z_i=r\,|\,T_t)
+%             \end{equation}
+%     \end{itemize}
+%     \begin{figure}
+%         \centering
+%         \includegraphics[width=\textwidth]{images/random_spanning_trees.pdf}
+%         \caption{TODO}
+%     \end{figure}
+%     \end{block}
+
+
+    \begin{block}{{\normalsize 7. Experiments and Results}}
     \begin{itemize}
-        \item Marginal inference intractable in practice due to exponentail sized candidate assignment space $\mathcal{Z}$
-        \item Exact inference is feasible if $G$ is tree-like \todocite
-        \item Resort to infer the max-marginals a set of trees $\mathbf{T}=\{T_t\}_{t=1}^L$ sampled from $G$
-        \item Each tree $T_t=(V,E_t)$ is connected graph with all nodes of $G$ but reduces edges set $E_t\subseteq E$
-        \item Avergaged marginals used for ranking
-            \begin{equation}
-                \bar{p}_{\max}(z_i=r\,|\,\mathbf{T})=\frac{1}{L}\sum_{t=1}^L p_{\max}(z_i=r\,|\,T_t)
-            \end{equation}
+        \item \textbf{Evaluation datasets:} CASMI 2016 \cite{Schymanski2017}, EA subset from MassBank used by \cite{Ruttkies2016} 
+        \item[$\circ$] 681 (\msms, RT)-tuples with median number of candidates between 120 and 919
+        \item \textbf{RankSVM training data:} 1248 RTs from PredRed \cite{Stanstrup2015} and CASMI 2016 training
+        \item[$\circ$] No evaluation set molecule in RankSVM tranining set
+        \item \textbf{Performance measure:} Top-$k$ accuracy, percentage of correct molecular candidates at rank $\leq k$
+    \end{itemize}
+    \vspace{0.5cm}
+    \textbf{Experiment 1: Comparison to MetFrag + LogP Prediction}
+    \begin{itemize}
+        \item[$\circ$] MetFrag relaunched \cite{Ruttkies2016}: Prediction of LogP values for candidates, linear model mapping measured RTs to LogPs, candidate re-ranking based on LogP deviation
+    \end{itemize}
+        \begin{table}
+            \centering
+            \begin{tabular}{lcccc}
+                \toprule
+                \textbf{Method} & \textbf{Top-1} & \textbf{Top-5} & \textbf{Top-10} & \textbf{Top-20} \\ \midrule
+                \msms{} + RT (Our) & 21.3 & 52.9 & 64.0 & 74.3 \\
+                \msms{} + RT (MetFrag \& LogP) & 20.5 & 49.1 & 61.2 & 72.6 \\ \cmidrule(lr){1-5}
+                Only \msms{} (baseline) & 16.7 & 49.5 & 60.4 & 70.6 \\
+                \bottomrule
+            \end{tabular}
+        \end{table}
+    \vspace{1cm}
+    \textbf{Experiment 2: Performance with different \msms{}-Scoring Methods}
+    \begin{itemize}
+        \item[$\circ$] MetFrag (in-silico fragmenter scores) and IOKR \cite{Brouard_ismb_2016} as \msms{}-scoring methods
+    \end{itemize}
+        \begin{table}
+            \centering
+            \begin{tabular}{llcccc}
+                \toprule
+                {\bf \ms$^\mathbf{2}$-Scorer} & {\bf Method} & {\bf Top-1} & {\bf Top-5} & {\bf Top-10} & {\bf Top-20} \\ 
+                \midrule
+                    \multirow{2}{*}{MetFrag} &  \msms{} + RT (our) &   21.3 &   52.9 &    64.0 &    74.3 \\
+                                             &  Only \msms{} (baseline) &   16.7 &   49.5 &    60.4 &    70.6 \\
+                    \cmidrule(lr){1-6}
+                    \multirow{2}{*}{IOKR} &  \msms{} + RT (our) &   26.7 &   52.1 &    62.5 &    70.3 \\
+                                          &  Only \msms{} (baseline)&   25.1 &   49.5 &    60.3 &    67.6 \\
+                \bottomrule
+            \end{tabular}
+        \end{table}
+    \vspace{1cm}
+    \textbf{Experiment 3: Missing \ms$^\mathbf{2}$ Spectra}
+    \begin{itemize}
+        \item[$\circ$] Simulating missing \msms{} information: Varying from 0\% (\msms) to 100\%
+        \item[$\circ$] If only \msone{}: Use mass deviation between precursor and candidate molecule
     \end{itemize}
     \begin{figure}
         \centering
-        \includegraphics[width=\textwidth]{images/random_spanning_trees.pdf}
-        \caption{TODO}
+        \includegraphics[width=0.8\textwidth]{images/missing_ms2.pdf}
     \end{figure}
+    \vspace{-0.75cm}
     \end{block}
 
-
-    \begin{block}{{\normalsize 5. Experiments and Results}}
-    \begin{itemize}
-        \item Dataset description
-        \item Show table 4 from the paper
-        \item Show figure 3 from the paper
-    \end{itemize}
-    \end{block}
 
 
 
