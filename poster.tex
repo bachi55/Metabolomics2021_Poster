@@ -15,8 +15,8 @@
 \usepackage{booktabs}
 \usepackage{multicol}
 \usepackage{pifont}
+\usepackage{tabularx}
 
-\bibliography{biblib.bib}
 
 \usepackage[figurename=Fig.]{caption}
 
@@ -64,7 +64,7 @@
 \newcommand{\pmark}{\textcolor{aaltoOrange}{\ding{108}}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+ 
 
 
 \mathtoolsset{showonlyrefs=true}
@@ -77,56 +77,67 @@
   
 \begin{columns}[T]
 
-\column{.33\linewidth}
-    \begin{block}{{\normalsize Small Molecule Identification in Untargeted Metabolomics}}
+\column{.32\linewidth}
+    \begin{block}{{\normalsize 1. Small Molecule Identification in Untargeted Metabolomics}}
     \begin{itemize}
-        \item Liquid chromatography (LC) coupled with tandem mass spectrometry (\msms) widely utilized in untargeted metabolomics studies
-        \item Challenge: Annotation of \lcms{} peaks with potential molecular structures
-        \item Most automated machine learning based approaches utilize \ms{} information only \todocite
-        \item \lc{} retention time (RT) is valueable additional information for the annotation \todocite, e.g.
+        \item Challenge in untargeted metabolomics studies: \textbf{Identification of the small molecules} present in a biological sample
+        \item \textbf{\lcms$^\mathbf{2}$} widely used analysis platform: Liquid chromatography (LC) coupled with tandem mass spectrometry (\msms) (Fig.~\ref{fig:lcmsms_pipeline})
+        \item Most machine learning approaches for small molecule identification only utilize \msms{} information \cite{Duehrkop2019, Brouard_ismb_2016}
+        \item \lc{} retention times (RT) can improve the small molecule annotation \cite{Ruttkies2016,Stanstrup2015}
+        \item \textbf{Challenges utilizing RT information:} (1) \lc-system specific RT measurements and (2) public RT databases are limited in size and coverage
     \end{itemize}
+    \vspace{0.25cm}
     \begin{figure}[h]
         \centering
         \includegraphics[width=\textwidth]{images/lcms2_experiment.pdf}
         \caption{\lcmsms{} analysis pipeline and resulting data used as input for our framework.}
+        \label{fig:lcmsms_pipeline}
     \end{figure}
+    \vspace{-0.5cm}
     \end{block}
 
-    \begin{block}{{\normalsize Retention Time (RT) Utilization}}
+    \begin{block}{{\normalsize 2. Retention Time (RT) Utilization for Small Molecule Identification}}
     \begin{itemize}
-     \item Multiple approaches to utilize RT for molecule annotation exist
-     \item (utilization of RT information, scalable, cross laboratories (\lc-systems), RT reference free)
-     \item[1)] Compare measured RTs with in-house reference RTs \hfill \cmark, \xmark, \xmark, \xmark
-     \item[2)] Compare measured RTs with projected reference RTs \hfill \cmark, \xmark, \pmark, \xmark
-     \item[3)] Compare measured RTs with predicted RTs \hfill \cmark, \cmark, \pmark, \pmark
-     \item[4)] Compare measured RTs with predicted RTs proxies, e.g. LogP \hfill \cmark, \cmark, \cmark, \xmark
-%      \item[5)] \framebox{Compare measured retention orders with predicted ones \hfill \pmark, \cmark, \cmark, \cmark}
-     \item[5)] Compare measured retention orders with predicted ones \hfill \pmark, \cmark, \cmark, \cmark
-     \item Fully supported: \cmark, Partially supported: \pmark, Not supported: \xmark
-     \item RT comparison to prune candidate lists or (re)ranking \todocite
+        \item Different approaches proposed in the literature 
+        \item Multiple approaches to utilize RT for molecule annotation exist
+        \item (utilization of RT information, scalable, cross laboratories (\lc-systems), RT reference free)
+        \item[1)] Compare measured RTs with in-house reference RTs \hfill \cmark, \xmark, \xmark, \xmark
+        \item[2)] Compare measured RTs with projected reference RTs \hfill \cmark, \xmark, \pmark, \xmark
+        \item[3)] Compare measured RTs with predicted RTs \hfill \cmark, \cmark, \pmark, \pmark
+        \item[4)] Compare measured RTs with predicted RTs proxies, e.g. LogP \hfill \cmark, \cmark, \cmark, \xmark
+    %      \item[5)] \framebox{Compare measured retention orders with predicted ones \hfill \pmark, \cmark, \cmark, \cmark}
+        \item[5)] Compare measured retention orders with predicted ones \hfill \pmark, \cmark, \cmark, \cmark
+        \item Fully supported: \cmark, Partially supported: \pmark, Not supported: \xmark
+        \item RT comparison to prune candidate lists or (re)ranking \todocite
     \end{itemize}
     \end{block}
 
-    \begin{block}{{\normalsize \lcms{} Experiment Data and its Formal Representation}}
+    \begin{block}{{\normalsize 3. \lcms$^\mathbf{2}$ Experiment Data: Input and Output of our Framework}}
     \begin{itemize}
-        \item Assume data arises from \lcms{} experiment (after peak-picking and alignment)
-        \item Available information: \msone{}, RT and (etwaige only for some peaks) \msms
-        \item Molecular candidate lists are assumed to be given as well
-        \item \msms scores, e.g. MetFrag \todocite or CSI:FingerID \todocite, computed
-        \item Data from \lcms{} considered as set of $\seqlength$ \ms{} features:
+        \item \textbf{Input:} Preprocessed \lcmsms{} data, i.e. after peak-picking and alignment (Fig.\ref{fig:lcmsms_pipeline}):
+        \vspace{0.15cm}
             \begin{equation}
                 \mathcal{D}=\{(\spec_i,\rt_i,\cands_i)\}_{i=1}^\seqlength
             \end{equation}
-        \item $\spec_i$: \msms{} spectrum (or \msone{}, if no fragmentation available)
-        \item $\rt_i$: Measured RT
-        \item $\cands_i$: Potentail molecular annotations for feature $i$, e.g. exact mass search
+%         \vspace*{0.005cm}
+        \begin{tabularx}{\textwidth}{ccX}
+            $\spec_i$ & : & \ms{} Information; \msms{} or \msone{} (precursor m/z), if no fragmentation available \\
+            $\rt_i$ & : & Measured RT \\
+            $\cands_i$ & : & {Molecular candidate sets, e.g. molecular structures found in PubChem by \newline exact mass search} \\
+            $\seqlength$ & : & Number of \ms{} features   \\
+        \end{tabularx}
+        \vspace{0.025cm}
+        \item \textbf{Precomputed \ms{} scoring assumed:} \msone{} deviation of candidate and precursor mass or \msms{} scores, e.g. by CSI:FingerID \cite{Duehrkop2019}, MetFrag \cite{Ruttkies2016} or IOKR \cite{Brouard_ismb_2016}
+        \item \textbf{Output:} Ranking of the molecular candidates in $\mathcal{C}_i$ for each \ms{} feature $i$
+        \item Ranking based on \ms{} and RT information
     \end{itemize}
     \end{block}
 
 % ... end of first column
 
-\column{.33\linewidth}
-%     \begin{block}{{\normalsize 4. Overall Workflow}}
+\hfill
+\column{.34\linewidth}
+%     \begin{block}{{\normalsize 4. Overall Workflow}} 
 %     \begin{figure}
 %         \centering
 %         \includegraphics[width=\textwidth]{images/workflow.pdf}
@@ -171,8 +182,8 @@
     \end{block}
 
 
-
-\column{.33\linewidth}
+\hfill
+\column{.32\linewidth}
 
     \begin{block}{{\normalsize Spanning Tree Approximation}}
     \begin{itemize}
@@ -206,6 +217,13 @@
 \vfill
 
 \begin{block}{\small References}
+    \bibliographystyle{abbrv}
+    \vspace{-1cm}
+    \begin{multicols}{2}
+        \begin{footnotesize}
+            \bibliography{biblib.bib}
+        \end{footnotesize}
+    \end{multicols} 
 \end{block}
 %% <== end of second column
 

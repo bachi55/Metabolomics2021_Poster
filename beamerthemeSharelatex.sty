@@ -24,7 +24,7 @@
 
 \setbeamercolor*{normal text}{fg=black, bg=white}
 \setbeamercolor*{block body}{bg=aaltoBlue!10,fg=black}
-\setbeamercolor*{block title}{fg=white,bg=aaltoBlue}
+\setbeamercolor*{block title}{fg=white,bg=aaltoBlue!75}
 \setbeamerfont{block title}{size=\large,series=\bf}
 \setbeamercolor{upper separation line head}{fg=aaltoBlue}
 
@@ -43,12 +43,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \setbeamertemplate{block begin}{
   \vskip.75ex
-  \begin{beamercolorbox}[rounded=true,shadow=true,leftskip=1cm,colsep*=.75ex]{block title}%
+  \begin{beamercolorbox}[rounded=false,shadow=false,leftskip=1cm,colsep*=.75ex]{block title}%
     \usebeamerfont*{block title}\insertblocktitle
   \end{beamercolorbox}%
   {\ifbeamercolorempty[bg]{block body}{}{\nointerlineskip\vskip-0.5pt}}%
   \usebeamerfont{block body}%
-  \begin{beamercolorbox}[rounded=true,shadow=true,colsep*=.75ex,sep=.75ex,vmode]{block body}%
+  \begin{beamercolorbox}[rounded=false,shadow=false,colsep*=.75ex,sep=.75ex,vmode]{block body}%
     \ifbeamercolorempty[bg]{block body}{\vskip-.25ex}{\vskip-.75ex}\vbox{}%
   }
   \setbeamertemplate{block end}{
