@@ -13,20 +13,20 @@
 \setbeamercolor{headline}{fg=black,bg=white}
 \setbeamercolor{footline}{fg=black, bg=white}
 \setbeamerfont{footline}{size=\small}
-\setbeamercolor{upper separation line foot}{bg=aaltoBlue}
-\setbeamercolor{title in headline}{fg=aaltoBlue}
+\setbeamercolor{upper separation line foot}{bg=aaltoGreen}
+\setbeamercolor{title in headline}{fg=aaltoGreen}
 \setbeamercolor{author in headline}{fg=black}
-\setbeamercolor{institute in headline}{fg=aaltoBlue}
+\setbeamercolor{institute in headline}{fg=aaltoGreen}
 
 \setbeamercolor{framesubtitle}{fg=ta3aluminium, bg=ta2gray}
 \setbeamercolor{author in head/foot}{fg=black, bg=white}
 \setbeamercolor{title in head/foot}{fg=ta2aluminium, bg=black}
 
 \setbeamercolor*{normal text}{fg=black, bg=white}
-\setbeamercolor*{block body}{bg=aaltoBlue!10,fg=black}
-\setbeamercolor*{block title}{fg=white,bg=aaltoBlue!75}
+\setbeamercolor*{block body}{bg=aaltoGreen!10,fg=black}
+\setbeamercolor*{block title}{fg=white,bg=aaltoGreen!75}
 \setbeamerfont{block title}{size=\large,series=\bf}
-\setbeamercolor{upper separation line head}{fg=aaltoBlue}
+\setbeamercolor{upper separation line head}{fg=aaltoGreen}
 
 \setbeamercolor*{example body}{fg=ta3aluminium,bg=black}
 \setbeamercolor*{example text}{fg=ta3aluminium,bg=black}
@@ -62,35 +62,24 @@
   \begin{beamercolorbox}[wd=\paperwidth]{headline}
     \vspace{0.008\linewidth}
     \begin{columns}[T]
-      \begin{column}{.02\paperwidth}
+      \begin{column}{.015\paperwidth}
       \end{column}
-      \begin{column}{.15\paperwidth}
-        \vskip1cm
-        \begin{center}
-            \begin{columns}[T]
-            \begin{column}{0.33\textwidth}
-                \href{https://www.github.com/aalto-ics-kepaco/msms_rt_score_integration}{
-                    \includegraphics[scale=0.5]{images/github.pdf}
-                }
-            \end{column}
-            \begin{column}{0.33\textwidth}
-                \href{https://www.doi.org/10.1093/bioinformatics/btaa998}{
-                    \includegraphics[scale=0.5]{images/openaccess.pdf}
-                }
-            \end{column}
-            \begin{column}{0.33\textwidth}
-            \end{column}
-            \end{columns}
-        \end{center}
+      \begin{column}{.12\paperwidth}
+        \vskip1.5cm
+        \begin{table}
+            \begin{tabularx}{\textwidth}{YYY}
+                   \href{https://www.github.com/aalto-ics-kepaco/msms_rt_score_integration}{\includegraphics[scale=0.35]{images/github_2.pdf}} 
+                 & \href{https://www.doi.org/10.1093/bioinformatics/btaa998}{\includegraphics[scale=0.35]{images/openaccess_2.pdf}} 
+                 & \href{mailto:eric.bach@aalto.fi}{\includegraphics[scale=5]{images/letter.pdf}}\\
+                 \\
+                   \href{https://www.github.com/aalto-ics-kepaco/msms_rt_score_integration}{\normalsize{Code available}} 
+                 & \href{https://www.doi.org/10.1093/bioinformatics/btaa998}{\normalsize{Check out the paper}}
+                 & \href{mailto:eric.bach@aalto.fi}{\normalsize{Contact us}}
+            \end{tabularx}
+
+        \end{table}
       \end{column}
-      %\begin{column}{.04\paperwidth}
-      %  \vskip1ex
-      %  \begin{center}
-      %    \AaltoLogoLarge{1.55}{?}{aaltoPurple}
-      %  \end{center}
-      %  \vskip1ex
-      %\end{column}
-      \begin{column}{.7\paperwidth}
+      \begin{column}{.73\paperwidth}
 %         \vskip0.1cm
         \begin{center}
             \usebeamercolor{title in headline}{\color{fg}\textbf{\huge{\inserttitle}}\\[4ex]}
@@ -98,14 +87,14 @@
             \usebeamercolor{institute in headline}{\color{fg}\normalsize{\insertinstitute}\\[1ex]}
         \end{center}
       \end{column}
-      \begin{column}{.15\paperwidth}
-        \vskip1cm
+      \begin{column}{.12\paperwidth}
+        \vskip0.5cm
         \begin{center}
-            \includegraphics[width=\textwidth]{images/all_logos.pdf}
+            \includegraphics[width=0.9\textwidth]{images/all_logos.pdf}
         \end{center}
         %\vskip1.5cm
       \end{column}
-      \begin{column}{.01\paperwidth}
+      \begin{column}{.015\paperwidth}
       \end{column}
     \end{columns}
   \end{beamercolorbox}
