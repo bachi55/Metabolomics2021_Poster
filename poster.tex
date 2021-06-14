@@ -96,22 +96,30 @@
         \caption{\lcmsms{} analysis pipeline and resulting data used as input for our framework.}
         \label{fig:lcmsms_pipeline}
     \end{figure}
-    \vspace{-0.5cm}
+    \vspace{-0.75cm}
     \end{block}
 
     \begin{block}{{\normalsize 2. Retention Time (RT) Utilization for Small Molecule Identification}}
     \begin{itemize}
-        \item Different approaches proposed in the literature 
-        \item Multiple approaches to utilize RT for molecule annotation exist
-        \item (utilization of RT information, scalable, cross laboratories (\lc-systems), RT reference free)
-        \item[1)] Compare measured RTs with in-house reference RTs \hfill \cmark, \xmark, \xmark, \xmark
-        \item[2)] Compare measured RTs with projected reference RTs \hfill \cmark, \xmark, \pmark, \xmark
-        \item[3)] Compare measured RTs with predicted RTs \hfill \cmark, \cmark, \pmark, \pmark
-        \item[4)] Compare measured RTs with predicted RTs proxies, e.g. LogP \hfill \cmark, \cmark, \cmark, \xmark
-        \item[5)] Compare measured retention orders with predicted ones \hfill \pmark, \cmark, \cmark, \cmark
-        \item Fully supported: \cmark, Partially supported: \pmark, Not supported: \xmark
-        \item RT comparison to prune candidate lists or (re)ranking \todocite
+%         \item Multiple approaches in the literature to utilize RTs for molecule identification:
+        \item[1)] \textbf{Comparison of measured RTs with (in-house) reference RTs}
+        \item[$\circ$] References databases (DB) typically small and \lc-system specific
+        \item[$\circ$] RT mapping between \lc-systems possible, but requires DB overlaps \cite{Stanstrup2015}
+        \item[2)] \textbf{Comparison of measured RTs with predicted ones} \cite{Aicheler2015}  
+        \item[$\circ$] RT prediction models allow to get RTs for practically every molecular structure
+        \item[$\circ$] However, majority of prediction models are \lc-system specific. 
+        \item[3)] \textbf{Compare RT-proxy or retention order with observed RT information} \cite{Ruttkies2016, Bach2018}
+        \item[$\circ$] Allows for predictions within an \lc-system family, e.g. reversed-phase \lc
+%         \item[$\circ$] Identification improved using LogP as RT-proxy \cite{Ruttkies2016}
+        \item[$\circ$] Retention orders largely preserved across \lc-setups and prediction possible 
     \end{itemize}
+    \vspace{0.25cm}
+    \textcolor{red}{\bf Our proposed approach:}
+    \begin{itemize}
+        \item[\textcolor{red}{$\bullet$}] Exploitation of all pairwise observed retention orders in an \lcmsms{} datasets
+        \item[\textcolor{red}{$\bullet$}] Comparison of observed and predicted retention orders to down- and up-vote potential molecular structures of the unknown molecules.
+    \end{itemize}
+
     \end{block}
 
     \begin{block}{{\normalsize 3. \lcms$^\mathbf{2}$ Experiment Data: Input and Output of our Framework}}
@@ -127,11 +135,11 @@
             $\cands_i$ & : & {Molecular candidate sets, e.g. molecular structures found in PubChem by \newline exact mass search} \\
             $\seqlength$ & : & Number of \ms{} features   \\
         \end{tabularx}
-        \vspace{0.025cm}
         \item \textbf{Precomputed \ms{} scoring assumed:} \msone{} deviation of candidate and precursor mass or \msms{} scores, e.g. by CSI:FingerID \cite{Duehrkop2019}, MetFrag \cite{Ruttkies2016} or IOKR \cite{Brouard_ismb_2016}
         \item \textbf{Output:} Ranking of the molecular candidates in $m_{ir}\in\mathcal{C}_i$ for each \ms{} feature $i$
         \item Ranking based on \ms{} and RT information
     \end{itemize}
+    \vspace{-0.35cm}
     \end{block}
 
 % ... end of first column
@@ -271,12 +279,13 @@
 
 \begin{block}{\small References}
     \bibliographystyle{abbrv}
-    \vspace{-1cm}
+    \vspace{-0.75cm}
     \begin{multicols}{2}
         \begin{footnotesize}
             \bibliography{biblib.bib}
         \end{footnotesize}
     \end{multicols} 
+    \vspace{-0.35cm}
 \end{block}
 %% <== end of second column
 
