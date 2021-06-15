@@ -86,8 +86,8 @@
         \item Challenge in untargeted metabolomics studies: \textbf{Identification of the small molecules} present in a biological sample
         \item \textbf{\lcms$^\mathbf{2}$} widely used analysis platform: Liquid chromatography (LC) coupled with tandem mass spectrometry (\msms) (Fig.~\ref{fig:lcmsms_pipeline})
         \item Most machine learning approaches for small molecule identification only utilize \msms{} information \cite{Duehrkop2019, Brouard_ismb_2016}
-        \item \lc{} retention times (RT) can improve the small molecule annotation \cite{Ruttkies2016,Stanstrup2015}
-        \item \textbf{Challenges utilizing RT information:} (1) \lc-system specific RT measurements and (2) public RT databases are limited in size and coverage
+        \item \lc{} retention time (RT) information can aid small molecule identification \cite{Ruttkies2016,Stanstrup2015}
+        \item \textbf{Challenges utilizing RT information:} (1) \lc-system specific RTs and (2) public RT databases are limited in size and molecule coverage
     \end{itemize}
     \vspace{0.25cm}
     \begin{figure}[h]
@@ -107,10 +107,9 @@
         \item[$\circ$] RT mapping between \lc-systems possible, but requires DB overlaps \cite{Stanstrup2015}
         \item[2)] \textbf{Comparison of measured RTs with predicted ones} \cite{Aicheler2015}  
         \item[$\circ$] RT prediction models allow to get RTs for practically every molecular structure
-        \item[$\circ$] However, majority of prediction models are \lc-system specific. 
+        \item[$\circ$] Majority of prediction models trained for a single \lc-system only
         \item[3)] \textbf{Compare RT-proxy or retention order with observed RT information} \cite{Ruttkies2016, Bach2018}
-        \item[$\circ$] Allows for predictions within an \lc-system family, e.g. reversed-phase \lc
-%         \item[$\circ$] Identification improved using LogP as RT-proxy \cite{Ruttkies2016}
+        \item[$\circ$] Allows for predictions within an whole \lc-system family, e.g. reversed-phase
         \item[$\circ$] Retention orders largely preserved across \lc-setups and prediction possible 
     \end{itemize}
     \vspace{0.25cm}
@@ -130,12 +129,12 @@
                 \mathcal{D}=\{(\spec_i,\rt_i,\cands_i)\}_{i=1}^\seqlength
             \end{equation}
         \begin{tabularx}{\textwidth}{ccX}
-            $\spec_i$ & : & \ms{} Information; \msms{} or \msone{} (precursor m/z), if no fragmentation available \\
+            $\spec_i$ & : & \ms{} Information; \msms{}, or \msone{} (precursor m/z) if no fragmentation available \\
             $\rt_i$ & : & Measured RT \\
             $\cands_i$ & : & {Molecular candidate sets, e.g. molecular structures found in PubChem by \newline exact mass search} \\
             $\seqlength$ & : & Number of \ms{} features   \\
         \end{tabularx}
-        \item \textbf{Precomputed \ms{} scoring assumed:} \msone{} deviation of candidate and precursor mass or \msms{} scores, e.g. by CSI:FingerID \cite{Duehrkop2019}, MetFrag \cite{Ruttkies2016} or IOKR \cite{Brouard_ismb_2016}
+        \item \textbf{Precomputed \ms{} scoring assumed:} \msms{} scores, e.g. by CSI:FingerID \cite{Duehrkop2019}, MetFrag \cite{Ruttkies2016} or IOKR \cite{Brouard_ismb_2016}, or deviation of candidate and precursor mass for \msone{}
         \item \textbf{Output:} Ranking of the molecular candidates in $m_{ir}\in\mathcal{C}_i$ for each \ms{} feature $i$
         \item Ranking based on \ms{} and RT information
     \end{itemize}
@@ -151,7 +150,7 @@
         \item \textbf{Graphical model} $G$ superimposed on the \lcmsms{} data (Fig.~\ref{fig:mrf_and_ranking})
         \item Let $G=(V,E)$ be complete graph with a \textbf{node} $i\in V$ for each \ms{} feature, and an \textbf{edge} $(i,j)\in E$ for each feature pair 
         \item Discrete random variable $z_i\in\mathcal{Z}_i=\{1,\ldots,n_i\}$ associated with each node ($n_i=|\cands_i|$)
-        \item Candidate annotation for the complete data $\mathbf{z}=\{z_i\,|\,i\in V\}\in\mathcal{Z}_1\times\ldots\times\mathcal{Z}_\seqlength=\mathcal{Z}$
+        \item Candidate assignment for the complete data $\mathbf{z}=\{z_i\,|\,i\in V\}\in\mathcal{Z}_1\times\ldots\times\mathcal{Z}_\seqlength=\mathcal{Z}$
         \item Intuitively: Random variable $z_i$ denotes the candidate $m_{ir}\in\mathcal{C}_i$ assigned to feature $i$.
         \item Pairwise \textbf{Markov Random Field} as probabilistic model \cite{MacKay2005}:
             \begin{equation}
@@ -163,7 +162,7 @@
             \begin{equation}
                 p_{\max}(z_i=r)=\underset{\{\mathbf{z}'\in\mathcal{Z}\,|\,z'_i=r\}}{\max}p(\mathbf{z}')
             \end{equation}
-        \item Intuitively: Maximum marginal probability of a candidate assignment with $z_i=r$.
+        \item Intuitively: Maximum marginal probability of a candidate assignment $\mathbf{z}$ with $z_i=r$.
     \end{itemize}
     \vspace{0.25cm}
     \begin{figure}
@@ -177,11 +176,12 @@
 
     \begin{block}{{\normalsize 5. Encoding \ms{} and Retention Order Information: $\boldsymbol{\psi}_i$ and $\boldsymbol{\psi}_{ij}$}}
     \begin{itemize}
+        \item Goodness of the candidate assignment $\mathbf{z}$ modeled by potential functions $\psi$ (Fig.~\ref{fig:node_and_edge_potentials})
         \item Node potential $\psi_i:\mathcal{Z}_i\rightarrow\mathbb{R}_{>0}$: $\psi_i(z_i=r)=f(x_i,m_{ir})$
-        \item $f$ returns the \ms{} matching score $\in(0,1]$ of spectrum $x_i$ and candidate $m_{ir}$
+        \item[$\circ$] $f$ returns the \ms{} matching score $\in(0,1]$ of spectrum $x_i$ and candidate $m_{ir}$
         \item Edge potential $\psi_{ij}:\mathcal{Z}_i\times\mathcal{Z}_j\rightarrow\mathbb{R}_{>0}$, with $\sigma$ being the sigmoid function:
             \begin{equation}
-                \psi_{ij}(z_i=r,z_j=s)=\sigma(\underbrace{\sign(t_i-t_j)}_{\substack{\text{observed}\\ \text{retention order}}}\cdot\underbrace{\langle\mathbf{w},\phi(m_{ir})-\phi(m_{js})\rangle}_{\text{predicted retention order}})
+                \psi_{ij}(z_i=r,z_j=s)=\sigma(\underbrace{\sign(t_i-t_j)}_{\substack{\text{observed}\\ \text{retention order}}}\cdot\underbrace{\mathbf{w}^T(\phi(m_{ir})-\phi(m_{js}))}_{\text{predicted retention order}})
             \end{equation}
         \item Intuitively: Matching observed and predicted retention orders receive high scores.
         \item \textbf{Retention order prediction} using Ranking Support Vector Machine (RankSVM) $\mathbf{w}$ \cite{Bach2018}
@@ -190,45 +190,28 @@
     \vspace{0.25cm}
     \begin{figure}
         \centering
-        \includegraphics[width=0.9\textwidth]{images/node_and_edge_scores.pdf}
+        \includegraphics[width=0.8\textwidth]{images/node_and_edge_scores.pdf}
         \caption{Example: Node and edge score for all candidate pairs of feature $i=4$ and $j=5$.}
+        \label{fig:node_and_edge_potentials}
     \end{figure}
     \vspace{-0.75cm}
     \end{block}
 
 
 \hfill
-\column{.32\linewidth}
-
-%     \begin{block}{{\normalsize Spanning Tree Approximation}}
-%     \begin{itemize}
-%         \item Marginal inference intractable in practice due to exponentail sized candidate assignment space $\mathcal{Z}$
-%         \item Exact inference is feasible if $G$ is tree-like \todocite 
-%         \item Resort to infer the max-marginals a set of trees $\mathbf{T}=\{T_t\}_{t=1}^L$ sampled from $G$
-%         \item Each tree $T_t=(V,E_t)$ is connected graph with all nodes of $G$ but reduces edges set $E_t\subseteq E$
-%         \item Avergaged marginals used for ranking
-%             \begin{equation}
-%                 \bar{p}_{\max}(z_i=r\,|\,\mathbf{T})=\frac{1}{L}\sum_{t=1}^L p_{\max}(z_i=r\,|\,T_t)
-%             \end{equation}
-%     \end{itemize}
-%     \begin{figure}
-%         \centering
-%         \includegraphics[width=\textwidth]{images/random_spanning_trees.pdf}
-%         \caption{TODO}
-%     \end{figure}
-%     \end{block}
-
+\column{.32\linewidth} 
 
     \begin{block}{{\normalsize 6. Experiments and Results}}
     \begin{itemize}
         \item \textbf{Evaluation datasets:} CASMI 2016 \cite{Schymanski2017}, EA subset from MassBank used by \cite{Ruttkies2016} 
         \item[$\circ$] 681 (\msms, RT)-tuples with median number of candidates between 120 and 919
+        \item[$\circ$] Datasets cover two different \lc{} columns and flow gradients
         \item \textbf{RankSVM training data:} 1248 RTs from PredRed \cite{Stanstrup2015} and CASMI 2016 training
         \item[$\circ$] No evaluation set molecule in RankSVM tranining set
         \item \textbf{Performance measure:} Top-$k$ accuracy, percentage of correct molecular candidates at rank $\leq k$
     \end{itemize}
     \vspace{0.5cm}
-    \textbf{Experiment 1: Comparison to MetFrag + LogP Prediction}
+    \textbf{Experiment 1: Comparison to MetFrag + LogP (RT Proxy) Prediction}
     \begin{itemize}
         \item[$\circ$] MetFrag relaunched \cite{Ruttkies2016}: Prediction of LogP values for candidates, linear model mapping measured RTs to LogPs, candidate re-ranking based on LogP deviation
     \end{itemize}
@@ -265,12 +248,12 @@
     \vspace{1cm}
     \textbf{Experiment 3: Missing \ms$^\mathbf{2}$ Spectra}
     \begin{itemize}
-        \item[$\circ$] Simulating missing \msms{} information: Varying from 0\% (\msms) to 100\%
+        \item[$\circ$] Simulating missing \msms{} information: Varying from 0\% to 100\% \msms
         \item[$\circ$] If only \msone{}: Use mass deviation between precursor and candidate molecule
     \end{itemize}
     \begin{figure}
         \centering
-        \includegraphics[width=0.8\textwidth]{images/missing_ms2.pdf}
+        \includegraphics[width=0.7\textwidth]{images/missing_ms2.pdf}
     \end{figure}
     \vspace{-0.75cm}
     \end{block}
